@@ -35,4 +35,5 @@ public class SortingTest {
 		assertArrayEquals(arrayToBeSorted, sort.moreEfficientInsertionSort(arrayToBeSorted));
 		System.out.println(Arrays.toString(arrayToBeSorted));
 	}
+	
 }
