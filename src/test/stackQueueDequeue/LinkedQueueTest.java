@@ -2,11 +2,10 @@ package stackQueueDequeue;
 
 import org.junit.Before;
 
-public class ArrayStackTest extends StackTest {
+public class LinkedQueueTest extends QueueTest{
 
 	@Before
 	public void setup(){
-		stack = new ArrayStack<>(10);
+		queue = new LinkedQueue<>();
 	}
-	
 }
