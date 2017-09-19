@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public abstract class QueueTest {
 
-	Queue<String> queue;
+	protected Queue<String> queue;
 	
 	@Before
 	public abstract void setup();
