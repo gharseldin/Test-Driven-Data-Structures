@@ -108,4 +108,20 @@ public class DoublyLinkedListTest {
 		assertTrue("Size is 10", list.size() == 10);
 	}
 	
+	@Test
+	public void testClone() throws Exception{
+		
+		populateFrontOfList();
+		populateEndOfList();
+		
+		DoublyLinkedList<Integer> other = new DoublyLinkedList<>();
+		other = list.clone();
+		
+		assertEquals("Links from front to end", list.printFromFrontToEnd(), other.printFromFrontToEnd());
+
+		assertEquals("Links from end to front", list.printFromEndToFront(), other.printFromEndToFront());
+		assertEquals ("The cloned list should equal the original", other, list);
+		
+	}
+	
 }

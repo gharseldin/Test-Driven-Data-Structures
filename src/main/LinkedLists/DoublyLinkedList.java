@@ -1,6 +1,6 @@
 package LinkedLists;
 
-public class DoublyLinkedList<E> {
+public class DoublyLinkedList<E> implements Cloneable{
 
 	public static class Node<E>{
 		E element;
@@ -87,5 +87,62 @@ public class DoublyLinkedList<E> {
 		node.getPrev().setNext(node.next);
 		size--;
 		return value;
+	}
+	
+	public boolean equals(Object o){
+		if(o == null) return false;
+		if(getClass() != o.getClass()) return false;
+		DoublyLinkedList<E> other = (DoublyLinkedList<E>)o;
+		Node<E> walkA = this.header;
+		Node<E> walkB = other.header;
+		while(walkA.getNext().getElement()!=null){
+			if(walkA.getElement() != walkB.getElement())return false;
+			walkA = walkA.getNext();
+			walkB = walkB.getNext();
+		}
+		return true;
+	}
+	
+	public DoublyLinkedList<E> clone() throws CloneNotSupportedException{
+		DoublyLinkedList<E> other  = (DoublyLinkedList<E>)super.clone();
+		if(size > 0){
+			other.header = new Node<>(null, null, null);
+			other.trailer = new Node<>(null, other.header, null);
+			other.header.setNext(trailer);
+			
+			Node<E> walk = header;
+			Node<E> last = other.header;
+			// iterate till the end
+			while(walk.getNext().getElement() != null){
+				walk = walk.getNext();
+				other.addBetween(walk.getElement(), last, other.trailer);
+				last = last.getNext();
+			}
+		}
+		return other;
+	}
+	
+	public String printFromFrontToEnd(){
+		String result = "";
+		Node<E> walk = header;
+		result += ("{ ");
+		while(walk.getNext().getElement() != null){
+			walk = walk.getNext();
+			result += (walk.getElement() + " ");
+		}
+		result += ("}");
+		return result;
+	}
+	
+	public String printFromEndToFront(){
+		String result = "";
+		Node<E> walk = trailer;
+		result += ("{ ");
+		while(walk.getPrev().getElement()!=null){
+			walk = walk.getPrev();
+			result += (walk.getElement() + " ");
+		}
+		result += ("}");
+		return result;
 	}
 }
