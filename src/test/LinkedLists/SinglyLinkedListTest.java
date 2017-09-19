@@ -65,18 +65,23 @@ public class SinglyLinkedListTest {
 	
 	@Test
 	public void testfirst() {
+		assertEquals("First value should be equal to null if nothing is in the list", null, list.first());
 		list.addFirst(777);
 		assertTrue("Value inserted is at the first position", list.first() == 777);
 	}
 	
 	@Test
 	public void testLast() {
+		assertEquals("Last value should be equal to null if nothing is in the list", null, list.last());
 		list.addLast(666);
 		assertTrue("Value inserted is at the last position", list.last() == 666);
 	}
 	
 	@Test
 	public void testRemovefirst() {
+		
+		assertTrue("Removing the first element from an empty list will return null",list.removeFirst() == null);
+		
 		populateFrontOfList();
 		populateEndOfList();
 		assertTrue("Size is 20", list.size() == 20);
