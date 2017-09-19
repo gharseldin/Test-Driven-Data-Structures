@@ -68,5 +68,4 @@ public class CircularlyLinkedList<E> {
 		size--;
 		return value;
 	}
-	
 }
