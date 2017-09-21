@@ -4,7 +4,7 @@ public interface PositionalList<E> {
 	
 	int size();
 	
-	int isEmpty();
+	boolean isEmpty();
 	
 	Position<E> first();
 	
