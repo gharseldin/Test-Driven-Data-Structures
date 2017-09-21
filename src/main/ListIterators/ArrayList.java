@@ -44,6 +44,8 @@ public class ArrayList<E> implements List<E> {
 
 	@Override
 	public void add(int i, E e) throws IndexOutOfBoundsException {
+		if(size == list.length)
+			resize(2*list.length);
 		checkIndex(i);
 		if(i > size)
 			throw new IndexOutOfBoundsException();
@@ -72,5 +74,12 @@ public class ArrayList<E> implements List<E> {
 	private void checkIndex(int i) throws IndexOutOfBoundsException{
 		if(i<0 || i>=list.length )
 			throw new IndexOutOfBoundsException();
+	}
+	
+	private void resize(int size){
+		E[] newArray = (E[])new Object[size];
+		for (int i=0; i<list.length; i++)
+			newArray[i] = list[i];
+		list = newArray;
 	}
 }
