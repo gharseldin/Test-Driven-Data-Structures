@@ -23,14 +23,14 @@ public class LinkedPositionalListTest {
 	@Test
 	public void testaddFirstAndFirst(){
 		list.addFirst("First Element");
-		assertEquals("First Element", list.first());
+		assertEquals("First Element", list.first().getElement());
 	}
 	
 	@Test
 	public void testAddLastAndLast(){
 		list.addFirst("First Element");
 		list.addLast("Last Element");
-		assertEquals("Last Element", list.last());
+		assertEquals("Last Element", list.last().getElement());
 	}
 	
 	@Test
@@ -38,36 +38,73 @@ public class LinkedPositionalListTest {
 		Position<String> firstName = list.addFirst("Amr");
 		Position<String> lastName = list.addAfter(firstName, "Gharseldin");
 		assertEquals("Initial list is of size 2", 2, list.size());
-		assertEquals(lastName, list.after(firstName));
-		try{
-			list.after(lastName);
-			fail("And Exceptino shoudl be thrown by trying to find an element that is not present");
-		}catch(IllegalStateException e){
-			System.out.println(e.getMessage());
-		}
+		assertEquals(lastName.getElement(), list.after(firstName).getElement());
 	}
 	
 	@Test
-	public void testAddBEforeAndBefore(){
+	public void testAddBeforeAndBefore(){
 		Position<String> lastName = list.addFirst("Gharseldin");
-		Position<String> firstName = list.addBEfore(lastName, "Amr");
-		assertEquals("Amr", list.before(lastName));
+		Position<String> firstName = list.addBefore(lastName, "Amr");
+		assertEquals("Amr", list.before(lastName).getElement());
 	}
 	
 	@Test
 	public void testSet(){
 		Position<String> firstName = list.addFirst("Amr");
 		assertEquals("Amr", list.set(firstName, "Ahmed"));
-		assertEquals("Ahmed", list.first());
+		assertEquals("Ahmed", list.first().getElement());
 	}
 	
 	@Test
-	public void testRemove(){
+	public void testRemoveAndExceptions(){
 		Position<String> firstName = list.addFirst("Amr");
 		Position<String> lastName = list.addAfter(firstName, "Gharseldin");
-		assertEquals("Gharseldin", list.remove(lastName));
+		assertEquals("Gharseldin",(list.remove(lastName)));
 		assertEquals(1, list.size());
-		assertEquals("Amr", list.last());
+		assertEquals("Amr", list.last().getElement());
+		
+		
+		try{
+			list.addAfter(lastName, "test");
+			fail("Illegal Argument Expected from defunt argument");
+		}catch (IllegalArgumentException e){
+			System.out.println(e.getMessage());
+		}
+		
+		try{
+			list.addBefore(lastName, "test");
+			fail("Illegal Argument Expected from defunt argument");
+		}catch (IllegalArgumentException e){
+			System.out.println(e.getMessage());
+		}
+		
+		try{
+			list.after(lastName);
+			fail("Illegal Argument Expected from defunt argument");
+		}catch (IllegalArgumentException e){
+			System.out.println(e.getMessage());
+		}
+		
+		try{
+			list.before(lastName);
+			fail("Illegal Argument Expected from defunt argument");
+		}catch (IllegalArgumentException e){
+			System.out.println(e.getMessage());
+		}
+		
+		try{
+			list.set(lastName, "test");
+			fail("Illegal Argument Expected from defunt argument");
+		}catch (IllegalArgumentException e){
+			System.out.println(e.getMessage());
+		}
+		
+		try{
+			list.remove(lastName);
+			fail("Illegal Argument Expected from defunt argument");
+		}catch (IllegalArgumentException e){
+			System.out.println(e.getMessage());
+		}
 	}
 
 }
