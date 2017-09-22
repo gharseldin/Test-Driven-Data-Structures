@@ -22,16 +22,19 @@ public class ArrayList<E> implements List<E> {
 		}
 
 		@Override
-		public E remove() throws IllegalStateException{
+		public void remove() throws IllegalStateException{
 			if(!removable) 
 				throw new IllegalStateException("nothing to remove");
-			E value = ArrayList.this.remove(j-1);
 			j--;
 			removable = false;
-			return value;
 		}
 		
 	}
+	
+	public Iterator<E> iterator(){
+		return new ArrayIterator();
+	}
+	
 	public static final int CAPACITY = 1000;
 	private int size = 0;
 	private E[] list;
