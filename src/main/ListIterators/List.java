@@ -12,6 +12,6 @@ public interface List<E> {
 	
 	void add(int i, E e) throws IndexOutOfBoundsException;
 	
-	E remove(int i, E e) throws IndexOutOfBoundsException;
+	E remove(int i) throws IndexOutOfBoundsException;
 	
 }

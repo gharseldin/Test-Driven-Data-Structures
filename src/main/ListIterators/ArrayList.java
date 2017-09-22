@@ -1,7 +1,37 @@
 package ListIterators;
 
+import java.util.NoSuchElementException;
+
 public class ArrayList<E> implements List<E> {
 
+	private class ArrayIterator implements Iterator<E>{
+
+		private int j=0;	//index of next element to report
+		private boolean removable = false;
+		
+		@Override
+		public boolean hasNext() {
+			return j<size;
+		}
+
+		@Override
+		public E next() throws NoSuchElementException{
+			if(j== size) throw new NoSuchElementException("No next element");
+			removable = true;
+			return list[j++];
+		}
+
+		@Override
+		public E remove() throws IllegalStateException{
+			if(!removable) 
+				throw new IllegalStateException("nothing to remove");
+			E value = ArrayList.this.remove(j-1);
+			j--;
+			removable = false;
+			return value;
+		}
+		
+	}
 	public static final int CAPACITY = 1000;
 	private int size = 0;
 	private E[] list;
@@ -57,7 +87,7 @@ public class ArrayList<E> implements List<E> {
 	}
 
 	@Override
-	public E remove(int i, E e) throws IndexOutOfBoundsException {
+	public E remove(int i) throws IndexOutOfBoundsException {
 		checkIndex(i);
 		if(i >= size)
 			throw new IndexOutOfBoundsException();

@@ -33,7 +33,7 @@ public abstract class ListTest {
 		list.add(0, 10);
 		list.add(1, 20);
 		assertEquals("size equals 2", 2, list.size());
-		list.remove(0, 10);
+		list.remove(0);
 		assertEquals("size equals 1", 1, list.size());
 		assertEquals("first element is 20", (Integer)20, list.get(0));
 	}
