@@ -58,9 +58,10 @@ public class LinkedPositionalList<E> implements PositionalList<E> {
 		
 		public void remove(){
 			posIterator.remove();
-		}
-		
+		}	
 	}
+	
+	public Iterator<E> iterator(){ return new ElementIterator();}
 	
 	public static class Node<E> implements Position<E>{
 
