@@ -30,6 +30,9 @@ public class LinkedBinaryTreeTest {
 	public void testSizeInitialSize(){
 		assertEquals("Initial size should be zero", 0, binaryTree.size());
 		assertTrue("Initial binary tree should be empty", binaryTree.isEmpty());
+		// initializeTree to size 6
+		initializeTree(binaryTree);
+		assertEquals("Tree initialized with 6 elements", 6, binaryTree.size());
 	}
 	
 	@Test
@@ -60,5 +63,49 @@ public class LinkedBinaryTreeTest {
 		assertTrue("This is an internal node", binaryTree.isInternal(firstLeft));
 		Position<String> LeftOfFirstLeft = binaryTree.left(firstLeft);
 		assertFalse("This is an external node", binaryTree.isInternal(LeftOfFirstLeft));
+	}
+	
+	@Test
+	public void testIsExternal(){
+		initializeTree(binaryTree);
+		Position<String> root = binaryTree.root();
+		assertFalse("The root should no be an external node", binaryTree.isExternal(root));
+		Position<String> firstLeft = binaryTree.left(root);
+		assertFalse("First Left of root is not an external node", binaryTree.isExternal(firstLeft));
+		Position<String> rightOfFirstLeft = binaryTree.right(firstLeft);
+		assertTrue("This is a leaf node", binaryTree.isExternal(rightOfFirstLeft));
+	}
+	
+	@Test
+	public void testIsRoot(){
+		Position<String> root = binaryTree.addRoot("Test Root");
+		assertTrue("This should be true for the root", binaryTree.isRoot(root));
+	}
+	
+	@Test
+	public void testSet(){
+		initializeTree(binaryTree);
+		Position<String> root = binaryTree.root();
+		Position<String> topLeft = binaryTree.left(root);
+		assertEquals("Initial value is Top->Left.", "Top->Left", topLeft.getElement());
+		assertEquals("Setting the value should return the original", "Top->Left", binaryTree.set(topLeft, "Top&Left"));
+		assertEquals("The new value should be equal to Top&Left", "Top&Left", topLeft.getElement());
+	}
+	
+	@Test
+	public void testRemoe(){
+		initializeTree(binaryTree);
+		Position<String> root = binaryTree.root();
+		try{
+			binaryTree.remove(root);
+			fail("This should return an Illegal State Exception because the root has 2 children");
+		}catch(IllegalStateException e){
+			Position<String> rightOfFirstLeft = binaryTree.right(root);
+			assertEquals("Current size is 6", 6, binaryTree.size());
+			assertEquals("Removing a node should return its value", "Top->Right", binaryTree.remove(rightOfFirstLeft));
+			assertEquals("Current size after removing 1 node = 5", 5, binaryTree.size());
+			rightOfFirstLeft = binaryTree.right(root);
+			assertEquals("current position of Top->Right will be replaced with Top->Right->Left", "Top->Right->Left", binaryTree.right(root).getElement());
+		}
 	}
 }

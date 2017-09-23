@@ -69,14 +69,14 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
 	@Override
 	public boolean isExternal(Position<E> p) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return false;
+		Node<E> node = validate(p);
+		return(node.getLeft() == null && node.getRight() == null);
 	}
 
 	@Override
 	public boolean isRoot(Position<E> p) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return false;
+		Node<E> node = validate(p);
+		return node == root();
 	}
 
 	@Override
@@ -108,7 +108,6 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 		root = getNode(e, null, null, null);
 		size++;
 		return root;
-		
 	}
 	
 	public Position<E> addLeft(Position<E> p, E e){
@@ -128,16 +127,52 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 	}
 	
 	public E set(Position<E> p, E e){
-		return null;
+		Node<E> node = validate(p);
+		E value = node.getElement();
+		node.setElement(e);
+		return value;
 	}
 	
-	public void attach(Position<E> p , LinkedBinaryTree<E> leftTree, LinkedBinaryTree<E> rightTree){
-		
+	public void attach(Position<E> p , LinkedBinaryTree<E> leftTree, LinkedBinaryTree<E> rightTree) throws IllegalStateException{
+		Node<E> node = validate(p);
+		if(isInternal(p)) throw new IllegalArgumentException("The node must be a leaf");
+		size = leftTree.size() + rightTree.size();
+		Node<E> leftRoot = (Node<E>)leftTree.root();
+		Node<E> rightRoot = (Node<E>)rightTree.root();
+		node.setLeft(leftRoot);
+		node.setRight(rightRoot);
+		leftRoot.setParent(node);
+		rightRoot.setParent(node);
+		leftTree.root = null;
+		leftTree.size = 0;
+		rightTree.root = null;
+		rightTree.size = 0;
 	}
 	
-	public E remove(Position<E> p){
-		
-		return null;
+	public E remove(Position<E> p) throws IllegalStateException{
+		Node<E> node = validate(p);
+		if(numChildren(p) == 2)
+			throw new IllegalStateException("p has two children");
+		Node<E> child = (node.getLeft()!=null? node.getLeft():node.getRight());
+		if(child!=null)
+			child.setParent(node.getParent());
+		if(node == root)
+			root = child;
+		else{
+			Node<E> parent = node.getParent();
+			if(node == parent.getLeft())
+				parent.setLeft(child);
+			else
+				parent.setRight(child);
+		}
+		size--;
+		E temp = node.getElement();
+		node.setElement(null);
+		node.setLeft(null);
+		node.setRight(null);
+		node.setParent(null);
+		return temp;
+			
 	}
 	
 	private Node<E> validate(Position<E> p) throws IllegalArgumentException{
