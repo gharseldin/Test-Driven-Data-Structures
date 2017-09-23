@@ -40,19 +40,19 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 	
 	@Override
 	public Position<E> left(Position<E> p) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		Node<E> node = validate(p);
+		return node.getLeft();
 	}
 
 	@Override
 	public Position<E> right(Position<E> p) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		Node<E> node = validate(p);
+		return node.getRight();
 	}
 
 	@Override
 	public Position<E> root() {
-		return position(root);
+		return root;
 	}
 
 	@Override
@@ -63,8 +63,8 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
 	@Override
 	public boolean isInternal(Position<E> p) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return false;
+		Node<E> node  = validate(p);
+		return (node.getLeft()!=null || node.getRight()!=null);
 	}
 
 	@Override
@@ -111,16 +111,24 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 		
 	}
 	
-	public void addLeft(Position<E> p, E e){
-		
+	public Position<E> addLeft(Position<E> p, E e){
+		Node<E> parent = validate(p);
+		Node<E> newest = getNode(e, parent, null, null);
+		parent.setLeft(newest);
+		size++;
+		return newest;
 	}
 	
-	public void addRight(Position<E> p, E e){
-		
+	public Position<E> addRight(Position<E> p, E e){
+		Node<E> parent = validate(p);
+		Node<E> newest = getNode(e, parent, null, null);
+		parent.setRight(newest);
+		size++;
+		return newest;
 	}
 	
-	public void set(Position<E> p, E e){
-		
+	public E set(Position<E> p, E e){
+		return null;
 	}
 	
 	public void attach(Position<E> p , LinkedBinaryTree<E> leftTree, LinkedBinaryTree<E> rightTree){
@@ -130,6 +138,15 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 	public E remove(Position<E> p){
 		
 		return null;
+	}
+	
+	private Node<E> validate(Position<E> p) throws IllegalArgumentException{
+		if(!(p instanceof Node))
+			throw new IllegalArgumentException();
+		Node<E> node = (Node<E>)p;		// safe cast
+		if(node.getParent() == node)	// defunct node
+			throw new IllegalArgumentException();
+		return node;
 	}
 	
 	private Position<E> position(Node<E> n){
