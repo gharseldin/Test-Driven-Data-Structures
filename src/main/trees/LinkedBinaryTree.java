@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import ListIterators.Position;
+import stackQueueDequeue.LinkedQueue;
+import stackQueueDequeue.Queue;
 
 public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
@@ -215,6 +217,22 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 		List<Position<E>> snapshot = new ArrayList<>();
 		if(!isEmpty())
 			postOrderSubTree(root(), snapshot);
+		return snapshot;
+	}
+	
+	public Iterable<Position<E>> breadthFirst(){
+		List<Position<E>> snapshot = new ArrayList<>();
+		if(!isEmpty()){
+			Queue<Position<E>> fringe = new LinkedQueue<>();
+			fringe.enqueue(root());
+			while (!fringe.isEmpty()){
+				Position<E> p = fringe.dequeue();
+				snapshot.add(p);
+				for(Position<E> child : children(p)){
+					fringe.enqueue(child);
+				}
+			}
+		}
 		return snapshot;
 	}
 }
