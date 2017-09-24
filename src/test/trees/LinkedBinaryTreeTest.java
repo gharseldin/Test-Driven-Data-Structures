@@ -108,4 +108,15 @@ public class LinkedBinaryTreeTest {
 			assertEquals("current position of Top->Right will be replaced with Top->Right->Left", "Top->Right->Left", binaryTree.right(root).getElement());
 		}
 	}
+	
+	@Test
+	public void testPreOrderTraversal(){
+		String traversal = "";
+		initializeTree(binaryTree);
+		for(String s : binaryTree)
+			traversal+=s+" ";
+		String expected = "Top Top->Left Top->Left->Left Top->Left->Right " +
+			"Top->Right Top->Right->Left ";
+		assertEquals("Preorder traversal check", expected, traversal);
+	}
 }
