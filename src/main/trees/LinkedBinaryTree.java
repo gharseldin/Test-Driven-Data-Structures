@@ -1,11 +1,20 @@
 package trees;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import ListIterators.Position;
 
 public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
+	private class ElementIterator implements Iterator<E>{
+		Iterator<Position<E>> posIterator = positions().iterator();
+		public boolean hasNext() {return posIterator.hasNext();}
+		public E next() { return posIterator.next().getElement();}
+		public void remove(){posIterator.remove();}
+	}
+	
 	protected static class Node<E> implements Position<E>{
 		private E element;
 		private Node<E> parent;
@@ -88,18 +97,6 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 	public boolean isEmpty() {
 		return size==0;
 	}
-
-	@Override
-	public Iterator<E> iterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Iterable<Position<E>> positions() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	// Update methods
 	public Position<E> addRoot(E e) throws IllegalStateException{
@@ -175,6 +172,16 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 			
 	}
 	
+	@Override
+	public Iterator<E> iterator() {
+		return new ElementIterator();
+	}
+
+	@Override
+	public Iterable<Position<E>> positions() {
+		return preorder();
+	}
+	
 	private Node<E> validate(Position<E> p) throws IllegalArgumentException{
 		if(!(p instanceof Node))
 			throw new IllegalArgumentException();
@@ -184,8 +191,17 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 		return node;
 	}
 	
-	private Position<E> position(Node<E> n){
-		return n;
+	private void preorderSubTree(Position<E> p, List<Position<E>> snapshot){
+		snapshot.add(p);
+		for(Position<E> c : children(p))
+			preorderSubTree(c, snapshot);
+		
 	}
-
+	
+	public Iterable<Position<E>> preorder(){
+		List<Position<E>> snapshot = new ArrayList<>();
+		if(!isEmpty())
+			preorderSubTree(root(), snapshot);
+		return snapshot;
+	}
 }
