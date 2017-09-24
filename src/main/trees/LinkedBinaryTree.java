@@ -204,4 +204,17 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 			preorderSubTree(root(), snapshot);
 		return snapshot;
 	}
+	
+	private void postOrderSubTree(Position<E> p, List<Position<E>> snapshot){
+		for(Position<E> c : children(p))
+			postOrderSubTree(c, snapshot);
+		snapshot.add(p);
+	}
+	
+	public Iterable<Position<E>> postorder(){
+		List<Position<E>> snapshot = new ArrayList<>();
+		if(!isEmpty())
+			postOrderSubTree(root(), snapshot);
+		return snapshot;
+	}
 }
