@@ -39,16 +39,16 @@ public abstract class AbstractMap<K, V> implements Map<K, V>{
 	}
 	private class KeyIterator implements Iterator<K>{
 
-		Iterable<MapEntry<K, V>> buffer = entries();
+		Iterator<MapEntry<K, V>> buffer = entries().iterator();
 		
 		@Override
 		public boolean hasNext() {
-			return buffer.iterator().hasNext();
+			return buffer.hasNext();
 		}
 
 		@Override
 		public K next() {
-			return buffer.iterator().next().getKey();
+			return buffer.next().getKey();
 		}
 		
 		@Override
@@ -71,15 +71,16 @@ public abstract class AbstractMap<K, V> implements Map<K, V>{
 	
 	private class ValueIterator implements Iterator<V>{
 
-		Iterable<MapEntry<K, V>> buffer = entries();
+		Iterator<MapEntry<K, V>> buffer = entries().iterator();
+		
 		@Override
 		public boolean hasNext() {
-			return buffer.iterator().hasNext();
+			return buffer.hasNext();
 		}
 
 		@Override
 		public V next() {
-			return buffer.iterator().next().getValue();
+			return buffer.next().getValue();
 		}
 		
 		public void remove(){

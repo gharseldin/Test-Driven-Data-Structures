@@ -17,7 +17,6 @@ public class UnsortedTableMapTest extends MapTest{
 		initialize();
 		assertEquals("Getting a value that is not in the map should return null",
 				null, EmployeeAges.get("Some Name"));
-		EmployeeAges.put("Some Name", 999);
 		assertEquals("Adding an item that is not already in the list will result in a null return",
 				null,EmployeeAges.put("Some Name", 999));
 		assertEquals("Adding an item that is already in the list will result in an old value return",
@@ -48,7 +47,7 @@ public class UnsortedTableMapTest extends MapTest{
 		int count = 0;
 		for(T item : iterable){
 			count++;
-			assertEquals("The item is not null", null, item);
+			assertTrue("The item is not null",item != null);
 		}
 		assertEquals("There should be 8 items in the map", 8, count);
 	}
