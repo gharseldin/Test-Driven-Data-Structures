@@ -1,61 +1,89 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
 
 public class SecondClass {
 
-	int variable = 10;
-	
-	public void decrement() {
-		variable--;
-	}
-	
-	public static void main(String[] args){
-		
+    public static void main(String[] args) {
         /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution. */
-        String[] inputLines;
+        
         Scanner scanner = new Scanner(System.in);
-        int numberOfLines = scanner.nextInt();
         
-        inputLines = new String[numberOfLines];
+        MyDate actual = aquireDate(scanner);
+        MyDate expected = aquireDate(scanner);
         
-        scanner.nextLine();
-        for(int i=0; i<numberOfLines; i++){
-            inputLines[i] = scanner.nextLine();
-        }
         scanner.close();
-	    
-//        StringBuilder html = new StringBuilder();
-//	    
-//        // bundle up in one big string
-//        for(int i = 0; i<numberOfLines; i++){
-//        	html.append(inputLines[i]);
-//        }
-        Pattern p = Pattern.compile("<a\\s*href=\"([^\"]*)\"[^>]*>(.*)</a>.*");
-        for(int i=0; i<numberOfLines; i++){
-	        Matcher m = p.matcher(inputLines[i]);
-	        while(m.find()){
-	        	System.out.println(m.group(1).trim()+","+m.group(2).trim());
-	        }
+        
+        // if the book was returned on time
+        if(actual.earlierOrEqual(expected))
+            System.out.println(0);
+        
+        // We are sure the book is late at this point
+        else{
+            // if its only days late
+            System.out.println(actual.calculateFine(expected));      
         }
-//        Pattern pattern = Pattern.compile(".*href=\"([^\"]*)\"[^>]*>(.*)</a>.*");
-//        Matcher matcher;
-//        
-//        String[] tokens = html.toString().split("<a ");
-//        String[] strippedLinks = new String[tokens.length-1];
-//        for(int i=1; i<tokens.length; i++){
-//	        matcher = pattern.matcher(tokens[i]);
-//	        strippedLinks[i-1] = matcher.replaceAll("$1,$2");
-//        }
-//        for(int i=0; i<strippedLinks.length; i++){
-//        	if(strippedLinks[i].contains("<")){
-//        		String[] temp = strippedLinks[i].split(">|<");
-//        		System.out.println((temp[0]+temp[(temp.length/2)]).trim());
-//        	}else{
-//        		System.out.println(strippedLinks[i].trim());
-//        	}
-//        }
-	}
+    }
+    
+    private static MyDate aquireDate (Scanner scanner){
+
+        int day = scanner.nextInt();
+        int month = scanner.nextInt();
+        int year = scanner.nextInt();
+        return new MyDate(day, month, year);
+
+    }
+}
+
+
+
+class MyDate {
+    
+    final static int DAY_FINE = 15;
+    final static int MONTH_FINE = 500;
+    final static int YEAR_FINE = 10000;
+    
+    int day;
+    int month;
+    int year;
+    
+    MyDate(int d, int m, int y){
+        day = d;
+        month = m;
+        year = y;
+    }
+    
+    boolean isSameMonthAndYear(MyDate other){
+        if((other.year == year)&&(other.month == month))
+            return true;
+        return false;
+    }
+    
+    boolean isSameYear(MyDate other){
+        if(other.year == year)
+            return true;
+        return false;
+    }
+    
+    boolean earlierOrEqual(MyDate other){
+        if ((year <= other.year)&&(month <= other.month) && (day <= other.day))
+            return true;
+        return false;
+    }
+    
+    int calculateFine(MyDate expected){
+        int fine = 0;
+        
+        // only days late
+        if(isSameMonthAndYear(expected))
+            fine = DAY_FINE * (day-expected.day);
+        else if (isSameYear(expected))
+            fine = MONTH_FINE * (month - expected.month);
+        else 
+            fine = YEAR_FINE ;
+        
+        return fine;
+    }
 }
